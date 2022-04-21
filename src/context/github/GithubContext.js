@@ -19,18 +19,25 @@ export const GithubProvider = ({children}) => {
         // console.log(data.items);
     }
 
+    const getUsers = async (login) => {
+        const response = await fetch(`https://api.github.com/users/${login}`);
+        const data = await response.json();
+        setUser(data);
+        setLoading(false);
+    };
+
     const alert = () => {
         setalertText("Please enter github username");
         setInterval(() => setalertText(""), 3000);
     }
 
     const [users, setUsers] = useState([]);
+    const [user, setUser] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const [alertText, setalertText] = useState('');
 
     return (
-        <GithubContext.Provider value={{users, loading, fetchUsers, searchUsers, alert, alertText}}>
+        <GithubContext.Provider value={{users, user, loading, fetchUsers, searchUsers, alert, alertText, getUsers}}>
             {children}
         </GithubContext.Provider>
     );
